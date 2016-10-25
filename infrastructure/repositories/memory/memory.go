@@ -1,33 +1,37 @@
 package memory
 
 import (
-	"github.com/user/todo/domain/entities"
+	"github.com/schweppesale/todo/domain/entities"
 	"sync"
 )
 
-var container = struct{
+var container = struct {
 	sync.RWMutex
-	tasks map[string] entities.Task
-}{tasks: make(map[string] entities.Task)}
+	tasks map[string]entities.Task
+}{tasks: make(map[string]entities.Task)}
 
-type TaskRepository struct {}
+type TaskRepository struct{}
 
-func(r TaskRepository) FindAll() map[string] entities.Task  {
-	return container.tasks
+func (r TaskRepository) FindAll()(map[string]entities.Task, error) {
+	return container.tasks, nil
 }
 
-func(r TaskRepository) GetTaskByUniqueId(uniqueId string) entities.Task {
-	return container.tasks[uniqueId]
+func (r TaskRepository) GetTaskByUniqueId(uniqueId string)(entities.Task, error) {
+	if val, ok := container.tasks[uniqueId]; ok {
+		return val, nil
+	} else {
+		return nil, error("Task does not exist!")
+	}
 }
 
-func(r TaskRepository) SaveTask(task entities.Task) entities.Task {
+func (r TaskRepository) SaveTask(task entities.Task)(entities.Task, error) {
 	container.Lock()
 	container.tasks[task.UniqueId()] = task
 	container.Unlock()
-	return task
+	return task, nil
 }
 
-func(r TaskRepository) RemoveTask(uniqueId string) {
+func (r TaskRepository) RemoveTask(uniqueId string) {
 	container.Lock()
 	delete(container.tasks, uniqueId)
 	container.Unlock()
