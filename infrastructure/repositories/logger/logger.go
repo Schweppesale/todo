@@ -40,7 +40,7 @@ func (r TaskRepository) CreateTask(task entities.Task) (entities.Task, error) {
 
 func (r TaskRepository) RemoveTask(uniqueId string) {
 	log.Print("TaskRepository.RemoveTask:", uniqueId)
-	r.RemoveTask(uniqueId)
+	r.tasks.RemoveTask(uniqueId)
 }
 
 func NewTaskRepository(tasks repositories.TaskRepository) repositories.TaskRepository {
