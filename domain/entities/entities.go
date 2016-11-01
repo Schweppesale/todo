@@ -1,7 +1,6 @@
 package entities
 
 import (
-	"github.com/schweppesale/todo/domain/services"
 	"time"
 )
 
@@ -12,13 +11,29 @@ type Task struct {
 	updated_on string
 }
 
+func (t *Task) SetUniqueID(uniqueId string) {
+	t.unique_id = uniqueId
+}
+
+func (t Task) Title() string {
+	return t.title
+}
+
+func (t *Task) ChangeTitle(title string) {
+	t.title = title
+}
+
 func (t Task) UniqueId() string {
 	return t.unique_id
 }
 
-func NewTask(UUIDGen services.UniqueIdGenerator, title string) Task {
+func (t Task) UpdatedOn() string {
+	return t.updated_on
+}
+
+func NewTask(title string) Task {
 	return Task{
-		UUIDGen.Generate(),
+		"",
 		title,
 		time.Now().Format(time.UnixDate),
 		time.Now().Format(time.UnixDate),
