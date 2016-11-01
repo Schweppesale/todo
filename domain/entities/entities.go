@@ -1,8 +1,8 @@
 package entities
 
 import (
-	"time"
 	"github.com/schweppesale/todo/domain/services"
+	"time"
 )
 
 type Task struct {
