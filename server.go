@@ -24,7 +24,7 @@ func (s Server) Run() {
 			break
 		case r.Method == "POST":
 			r.ParseForm()
-			w.Write(s.serialize(s.tasks.CreateTask(r.Form.Get("title"))))
+			w.Write(s.serialize(s.tasks.CreateTask(r.Form.Get("title"), r.Form.Get("description"))))
 			break
 		}
 	})

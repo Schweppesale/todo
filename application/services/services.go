@@ -26,8 +26,8 @@ func (ts TaskService) GetTaskByUniqueId(uniqueId string) (response.TaskResponse,
 	return ts.mapper.MapTaskResponse(task), err
 }
 
-func (ts TaskService) CreateTask(title string) (response.TaskResponse, error) {
-	task, err := ts.tasks.CreateTask(entities.NewTask(title))
+func (ts TaskService) CreateTask(title string, description string) (response.TaskResponse, error) {
+	task, err := ts.tasks.CreateTask(entities.NewTask(title, description))
 	return ts.mapper.MapTaskResponse(task), err
 }
 
@@ -37,7 +37,7 @@ func (ts TaskService) UpdateTask(uniqueId string, title string) (response.TaskRe
 		return response.TaskResponse{}, err
 	}
 
-	task.ChangeTitle(title)
+	task.SetTitle(title)
 	newTask, err := ts.tasks.UpdateTask(task)
 	return ts.mapper.MapTaskResponse(newTask), err
 }
