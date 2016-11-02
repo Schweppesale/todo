@@ -5,7 +5,7 @@ import (
 )
 
 type TaskRepository interface {
-	FindAll() (map[string]entities.Task, error)
+	FindAll() ([]entities.Task, error)
 
 	GetTaskByUniqueId(uniqueId string) (entities.Task, error)
 

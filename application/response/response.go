@@ -1,9 +1,11 @@
 package response
 
+import "time"
+
 type TaskResponse struct {
 	UniqueId    string
 	Title       string
 	Description string
-	UpdatedOn   string
-	CreatedOn   string
+	CreatedOn   time.Time
+	UpdatedOn   time.Time
 }

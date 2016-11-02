@@ -16,7 +16,7 @@ func NewTaskRepository(tasks repositories.TaskRepository) repositories.TaskRepos
 	}
 }
 
-func (r TaskRepository) FindAll() (map[string]entities.Task, error) {
+func (r TaskRepository) FindAll() ([]entities.Task, error) {
 	log.Print("TaskRepository.FindAll:")
 	result, err := r.tasks.FindAll()
 	log.Print("TaskRepository.FindAll:", result)

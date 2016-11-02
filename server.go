@@ -64,7 +64,6 @@ func (server Server) Run() {
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-
 type HttpResponseHandler interface {
 	Format(response http.ResponseWriter, payload interface{}, err error)
 }
@@ -82,10 +81,11 @@ func (handler JsonResponseHandler) Format(response http.ResponseWriter, payload 
 		return
 	}
 
-	if serialized, err := json.Marshal(payload); err != nil {
-		response.Write(serialized)
+	serialized, err := json.Marshal(payload)
+	if err != nil {
+		log.Fatal("FATAL ERROR: ", err)
 		return
 	}
 
-	panic(err)
+	response.Write(serialized)
 }

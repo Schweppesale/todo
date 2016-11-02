@@ -19,9 +19,9 @@ func NewTaskService(tasks repositories.TaskRepository, mapper mappers.TaskMapper
 	}
 }
 
-func (ts TaskService) FindAll() (map[string]response.TaskResponse, error) {
+func (ts TaskService) FindAll() ([]response.TaskResponse, error) {
 	tasks, err := ts.tasks.FindAll()
-	result := make(map[string]response.TaskResponse, len(tasks))
+	result := make([]response.TaskResponse, len(tasks))
 	for k, v := range tasks {
 		result[k] = ts.mapper.MapTaskResponse(v)
 	}
