@@ -12,6 +12,13 @@ type TaskService struct {
 	mapper mappers.TaskMapper
 }
 
+func NewTaskService(tasks repositories.TaskRepository, mapper mappers.TaskMapper) TaskService {
+	return TaskService{
+		tasks,
+		mapper,
+	}
+}
+
 func (ts TaskService) FindAll() (map[string]response.TaskResponse, error) {
 	tasks, err := ts.tasks.FindAll()
 	result := make(map[string]response.TaskResponse, len(tasks))
@@ -31,24 +38,17 @@ func (ts TaskService) CreateTask(title string, description string) (response.Tas
 	return ts.mapper.MapTaskResponse(task), err
 }
 
-func (ts TaskService) UpdateTask(uniqueId string, title string) (response.TaskResponse, error) {
+func (ts TaskService) UpdateTask(uniqueId string, title string, description string) (response.TaskResponse, error) {
 	task, err := ts.tasks.GetTaskByUniqueId(uniqueId)
 	if err != nil {
 		return response.TaskResponse{}, err
 	}
-
 	task.SetTitle(title)
+	task.SetDescription(description)
 	newTask, err := ts.tasks.UpdateTask(task)
 	return ts.mapper.MapTaskResponse(newTask), err
 }
 
-func (ts TaskService) RemoveTask(uniqueId string) {
-	ts.tasks.RemoveTask(uniqueId)
-}
-
-func NewTaskService(tasks repositories.TaskRepository, mapper mappers.TaskMapper) TaskService {
-	return TaskService{
-		tasks,
-		mapper,
-	}
+func (ts TaskService) RemoveTask(uniqueId string) error {
+	return ts.tasks.RemoveTask(uniqueId)
 }

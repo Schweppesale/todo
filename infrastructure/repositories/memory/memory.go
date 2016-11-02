@@ -17,6 +17,10 @@ type TaskRepository struct {
 	uuidService services.UuidService
 }
 
+func NewTaskRepository(UuidService services.UuidService) repositories.TaskRepository {
+	return TaskRepository{UuidService}
+}
+
 func (r TaskRepository) FindAll() (map[string]entities.Task, error) {
 	return container.tasks, nil
 }
@@ -44,12 +48,9 @@ func (r TaskRepository) UpdateTask(task entities.Task) (entities.Task, error) {
 	return task, nil
 }
 
-func (r TaskRepository) RemoveTask(uniqueId string) {
+func (r TaskRepository) RemoveTask(uniqueId string) error {
 	container.Lock()
 	delete(container.tasks, uniqueId)
 	container.Unlock()
-}
-
-func NewTaskRepository(UuidService services.UuidService) repositories.TaskRepository {
-	return TaskRepository{UuidService}
+	return nil
 }

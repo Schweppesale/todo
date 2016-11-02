@@ -10,6 +10,12 @@ type TaskRepository struct {
 	tasks repositories.TaskRepository
 }
 
+func NewTaskRepository(tasks repositories.TaskRepository) repositories.TaskRepository {
+	return TaskRepository{
+		tasks,
+	}
+}
+
 func (r TaskRepository) FindAll() (map[string]entities.Task, error) {
 	log.Print("TaskRepository.FindAll:")
 	result, err := r.tasks.FindAll()
@@ -38,13 +44,7 @@ func (r TaskRepository) CreateTask(task entities.Task) (entities.Task, error) {
 	return result, err
 }
 
-func (r TaskRepository) RemoveTask(uniqueId string) {
+func (r TaskRepository) RemoveTask(uniqueId string) error {
 	log.Print("TaskRepository.RemoveTask:", uniqueId)
-	r.tasks.RemoveTask(uniqueId)
-}
-
-func NewTaskRepository(tasks repositories.TaskRepository) repositories.TaskRepository {
-	return TaskRepository{
-		tasks,
-	}
+	return r.tasks.RemoveTask(uniqueId)
 }

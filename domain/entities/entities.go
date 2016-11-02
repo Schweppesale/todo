@@ -12,6 +12,16 @@ type Task struct {
 	updated_on  time.Time
 }
 
+func NewTask(title string, description string) Task {
+	return Task{
+		"",
+		title,
+		description,
+		time.Now(),
+		time.Now(),
+	}
+}
+
 func (t *Task) SetUniqueID(uniqueId string) {
 	t.unique_id = uniqueId
 }
@@ -42,14 +52,4 @@ func (t Task) UpdatedOn() time.Time {
 
 func (t Task) CreatedOn() time.Time {
 	return t.created_on
-}
-
-func NewTask(title string, description string) Task {
-	return Task{
-		"",
-		title,
-		description,
-		time.Now(),
-		time.Now(),
-	}
 }

@@ -13,5 +13,5 @@ type TaskRepository interface {
 
 	UpdateTask(task entities.Task) (entities.Task, error)
 
-	RemoveTask(uniqueId string)
+	RemoveTask(uniqueId string) error
 }

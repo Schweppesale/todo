@@ -14,6 +14,13 @@ type Server struct {
 	responseHandler HttpResponseHandler
 }
 
+func NewServer(taskService services.TaskService, responseHandler HttpResponseHandler) Server {
+	return Server{
+		taskService,
+		responseHandler,
+	}
+}
+
 func (server Server) Run() {
 
 	router := mux.NewRouter()
@@ -40,9 +47,16 @@ func (server Server) Run() {
 			task, err := server.taskService.GetTaskByUniqueId(uniqueId)
 			server.responseHandler.Format(response, task, err)
 			break
+		case request.Method == "PATCH":
+			request.ParseForm()
+			title := request.Form.Get("title")
+			description := request.Form.Get("description")
+			task, err := server.taskService.UpdateTask(uniqueId, title, description)
+			server.responseHandler.Format(response, task, err)
+			break
 		case request.Method == "DELETE":
-			server.taskService.RemoveTask(uniqueId)
-			server.responseHandler.Format(response, "success true", nil)
+			err := server.taskService.RemoveTask(uniqueId)
+			server.responseHandler.Format(response, "success true", err)
 			break
 		}
 	})
@@ -50,12 +64,6 @@ func (server Server) Run() {
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-func NewServer(taskService services.TaskService, responseHandler HttpResponseHandler) Server {
-	return Server{
-		taskService,
-		responseHandler,
-	}
-}
 
 type HttpResponseHandler interface {
 	Format(response http.ResponseWriter, payload interface{}, err error)
@@ -63,16 +71,21 @@ type HttpResponseHandler interface {
 
 type JsonResponseHandler struct{}
 
+func NewJsonResponseHandler() JsonResponseHandler {
+	return JsonResponseHandler{}
+}
+
 func (handler JsonResponseHandler) Format(response http.ResponseWriter, payload interface{}, err error) {
 	response.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusNotFound)
-	} else {
-		serialized, _ := json.Marshal(payload)
-		response.Write(serialized)
+		return
 	}
-}
 
-func NewJsonResponseHandler() JsonResponseHandler {
-	return JsonResponseHandler{}
+	if serialized, err := json.Marshal(payload); err != nil {
+		response.Write(serialized)
+		return
+	}
+
+	panic(err)
 }

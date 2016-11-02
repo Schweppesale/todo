@@ -9,6 +9,10 @@ import (
 type TaskMapper struct {
 }
 
+func NewTaskMapper() TaskMapper {
+	return TaskMapper{}
+}
+
 func (ts TaskMapper) MapTaskResponse(task entities.Task) response.TaskResponse {
 	return response.TaskResponse{
 		task.UniqueId(),
@@ -17,8 +21,4 @@ func (ts TaskMapper) MapTaskResponse(task entities.Task) response.TaskResponse {
 		task.UpdatedOn().Format(time.UnixDate),
 		task.CreatedOn().Format(time.UnixDate),
 	}
-}
-
-func NewTaskMapper() TaskMapper {
-	return TaskMapper{}
 }
