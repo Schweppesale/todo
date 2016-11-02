@@ -12,8 +12,9 @@ func main() {
 	mapper := mappers.NewTaskMapper()
 	uuidService := satori.NewUuidService()
 	tasks := logger.NewTaskRepository(memory.NewTaskRepository(uuidService))
-	service := services.NewTaskService(tasks, mapper)
+	taskService := services.NewTaskService(tasks, mapper)
+	responseHandler := NewJsonResponseHandler()
 
-	server := NewServer(service)
+	server := NewServer(taskService, responseHandler)
 	server.Run()
 }

@@ -10,55 +10,69 @@ import (
 )
 
 type Server struct {
-	tasks services.TaskService
+	taskService     services.TaskService
+	responseHandler HttpResponseHandler
 }
 
-func (s Server) Run() {
+func (server Server) Run() {
 
-	r := mux.NewRouter()
-	r.HandleFunc("/api/todo/tasks", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+	router := mux.NewRouter()
+	router.HandleFunc("/api/todo/tasks", func(response http.ResponseWriter, request *http.Request) {
 		switch {
-		case r.Method == "GET":
-			w.Write(s.serialize(s.tasks.FindAll()))
+		case request.Method == "GET":
+			tasks, err := server.taskService.FindAll()
+			server.responseHandler.Format(response, tasks, err)
 			break
-		case r.Method == "POST":
-			r.ParseForm()
-			title := r.Form.Get("title")
-			description := r.Form.Get("description")
-			w.Write(s.serialize(s.tasks.CreateTask(title, description)))
+		case request.Method == "POST":
+			request.ParseForm()
+			title := request.Form.Get("title")
+			description := request.Form.Get("description")
+			task, err := server.taskService.CreateTask(title, description)
+			server.responseHandler.Format(response, task, err)
 			break
 		}
 	})
 
-	r.HandleFunc("/api/todo/tasks/{taskId}", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		uniqueId := path.Base(r.RequestURI)
+	router.HandleFunc("/api/todo/tasks/{taskId}", func(response http.ResponseWriter, request *http.Request) {
+		uniqueId := path.Base(request.RequestURI)
 		switch {
-		case r.Method == "GET":
-			w.Write(s.serialize(s.tasks.GetTaskByUniqueId(uniqueId)))
+		case request.Method == "GET":
+			task, err := server.taskService.GetTaskByUniqueId(uniqueId)
+			server.responseHandler.Format(response, task, err)
 			break
-		case r.Method == "DELETE":
-			task, _ := s.tasks.GetTaskByUniqueId(uniqueId)
-			s.tasks.RemoveTask(task.UniqueId)
+		case request.Method == "DELETE":
+			server.taskService.RemoveTask(uniqueId)
+			server.responseHandler.Format(response, "success true", nil)
+			break
 		}
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-func (s Server) serialize(payload interface{}, err error) []byte {
-	if err != nil {
-		response, _ := json.Marshal(err)
-		return response
-	}
-	response, _ := json.Marshal(payload)
-	return response
-
-}
-
-func NewServer(tasks services.TaskService) Server {
+func NewServer(tasks services.TaskService, responseHandler HttpResponseHandler) Server {
 	return Server{
 		tasks,
+		responseHandler,
 	}
+}
+
+type HttpResponseHandler interface {
+	Format(response http.ResponseWriter, payload interface{}, err error)
+}
+
+type JsonResponseHandler struct{}
+
+func (handler JsonResponseHandler) Format(response http.ResponseWriter, payload interface{}, err error) {
+	response.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusNotFound)
+	} else {
+		serialized, _ := json.Marshal(payload)
+		response.Write(serialized)
+	}
+}
+
+func NewJsonResponseHandler() JsonResponseHandler {
+	return JsonResponseHandler{}
 }
