@@ -50,9 +50,9 @@ func (server Server) Run() {
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-func NewServer(tasks services.TaskService, responseHandler HttpResponseHandler) Server {
+func NewServer(taskService services.TaskService, responseHandler HttpResponseHandler) Server {
 	return Server{
-		tasks,
+		taskService,
 		responseHandler,
 	}
 }
