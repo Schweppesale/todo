@@ -1,5 +1,5 @@
 package services
 
-type UniqueIdGenerator interface {
+type UuidService interface {
 	Generate() string
 }
