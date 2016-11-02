@@ -10,7 +10,7 @@ Install Go and update your PATH environment variable then run the following comm
 
 2) go build github.com/schweppesale/todo
 
-3) ./todo
+3) todo
 
 ## Documentation
 
