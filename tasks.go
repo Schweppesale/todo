@@ -24,7 +24,7 @@ func NewTask(title string, description string) Task {
 	}
 }
 
-// SetUniqueID invokes an interface to generate a new ID
+// SetUniqueID invokes an interface which generates a new UUID
 func (t *Task) SetUniqueID(generator UUIDGenerator) {
 	t.uniqueID = generator.Generate()
 	t.updatedOn = time.Now()
