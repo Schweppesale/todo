@@ -24,8 +24,8 @@ func (ts TaskService) FindTasks() ([]Task, error) {
 	return result, err
 }
 
-func (ts TaskService) GetTaskByUniqueId(uniqueId string) (Task, error) {
-	task, err := ts.tasks.GetTaskByUniqueId(uniqueId)
+func (ts TaskService) GetTaskByUniqueID(uniqueID string) (Task, error) {
+	task, err := ts.tasks.GetTaskByUniqueID(uniqueID)
 	return NewTask(task), err
 }
 
@@ -34,8 +34,8 @@ func (ts TaskService) CreateTask(title string, description string) (Task, error)
 	return NewTask(task), err
 }
 
-func (ts TaskService) UpdateTask(uniqueId string, title string, description string) (Task, error) {
-	task, err := ts.tasks.GetTaskByUniqueId(uniqueId)
+func (ts TaskService) UpdateTask(uniqueID string, title string, description string) (Task, error) {
+	task, err := ts.tasks.GetTaskByUniqueID(uniqueID)
 	if err != nil {
 		return Task{}, err
 	}
@@ -45,12 +45,12 @@ func (ts TaskService) UpdateTask(uniqueId string, title string, description stri
 	return NewTask(newTask), err
 }
 
-func (ts TaskService) RemoveTask(uniqueId string) error {
-	return ts.tasks.RemoveTask(uniqueId)
+func (ts TaskService) RemoveTask(uniqueID string) error {
+	return ts.tasks.RemoveTask(uniqueID)
 }
 
 type Task struct {
-	UniqueId    string
+	UniqueID    string
 	Title       string
 	Description string
 	CreatedOn   time.Time
@@ -59,7 +59,7 @@ type Task struct {
 
 func NewTask(task todo.Task) Task {
 	return Task{
-		task.UniqueId(),
+		task.UniqueID(),
 		task.Title(),
 		task.Description(),
 		task.CreatedOn(),

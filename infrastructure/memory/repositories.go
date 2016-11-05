@@ -28,8 +28,8 @@ func (r TaskRepository) FindTasks() ([]todo.Task, error) {
 	return result, nil
 }
 
-func (r TaskRepository) GetTaskByUniqueId(uniqueId string) (todo.Task, error) {
-	if val, ok := container.tasks[uniqueId]; ok {
+func (r TaskRepository) GetTaskByUniqueID(uniqueID string) (todo.Task, error) {
+	if val, ok := container.tasks[uniqueID]; ok {
 		return val, nil
 	} else {
 		return todo.Task{}, errors.New("Task does not exist!")
@@ -39,24 +39,24 @@ func (r TaskRepository) GetTaskByUniqueId(uniqueId string) (todo.Task, error) {
 func (r TaskRepository) CreateTask(task todo.Task) (todo.Task, error) {
 	task.SetUniqueID(r.uuidService)
 	container.Lock()
-	container.tasks[task.UniqueId()] = task
-	container.keys = append(container.keys, task.UniqueId())
+	container.tasks[task.UniqueID()] = task
+	container.keys = append(container.keys, task.UniqueID())
 	container.Unlock()
 	return task, nil
 }
 
 func (r TaskRepository) UpdateTask(task todo.Task) (todo.Task, error) {
 	container.Lock()
-	container.tasks[task.UniqueId()] = task
+	container.tasks[task.UniqueID()] = task
 	container.Unlock()
 	return task, nil
 }
 
-func (r TaskRepository) RemoveTask(uniqueId string) error {
+func (r TaskRepository) RemoveTask(uniqueID string) error {
 	container.Lock()
-	delete(container.tasks, uniqueId)
+	delete(container.tasks, uniqueID)
 	for key, value := range container.keys { //@todo optimize
-		if value == uniqueId {
+		if value == uniqueID {
 			container.keys = append(container.keys[:key], container.keys[key+1:]...)
 		}
 	}

@@ -22,10 +22,10 @@ func (r TaskRepository) FindTasks() ([]todo.Task, error) {
 	return result, err
 }
 
-func (r TaskRepository) GetTaskByUniqueId(uniqueId string) (todo.Task, error) {
-	log.Print("TaskRepository.GetTaskByUniqueId:", uniqueId)
-	result, err := r.tasks.GetTaskByUniqueId(uniqueId)
-	log.Print("TaskRepository.GetTaskByUniqueId:", result, err)
+func (r TaskRepository) GetTaskByUniqueID(uniqueID string) (todo.Task, error) {
+	log.Print("TaskRepository.GetTaskByUniqueID:", uniqueID)
+	result, err := r.tasks.GetTaskByUniqueID(uniqueID)
+	log.Print("TaskRepository.GetTaskByUniqueID:", result, err)
 	return result, err
 }
 
@@ -43,7 +43,7 @@ func (r TaskRepository) CreateTask(task todo.Task) (todo.Task, error) {
 	return result, err
 }
 
-func (r TaskRepository) RemoveTask(uniqueId string) error {
-	log.Print("TaskRepository.RemoveTask:", uniqueId)
-	return r.tasks.RemoveTask(uniqueId)
+func (r TaskRepository) RemoveTask(uniqueID string) error {
+	log.Print("TaskRepository.RemoveTask:", uniqueID)
+	return r.tasks.RemoveTask(uniqueID)
 }
