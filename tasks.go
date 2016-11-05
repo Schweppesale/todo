@@ -1,15 +1,15 @@
-package entities
+package todo
 
 import (
 	"time"
 )
 
 type Task struct {
-	unique_id   string
+	uniqueId    string
 	title       string
 	description string
-	created_on  time.Time
-	updated_on  time.Time
+	createdOn   time.Time
+	updatedOn   time.Time
 }
 
 func NewTask(title string, description string) Task {
@@ -22,8 +22,8 @@ func NewTask(title string, description string) Task {
 	}
 }
 
-func (t *Task) SetUniqueID(uniqueId string) {
-	t.unique_id = uniqueId
+func (t *Task) SetUniqueID(generator UUIDGenerator) {
+	t.uniqueId = generator.Generate()
 }
 
 func (t Task) Title() string {
@@ -43,13 +43,21 @@ func (t *Task) SetDescription(description string) {
 }
 
 func (t Task) UniqueId() string {
-	return t.unique_id
+	return t.uniqueId
 }
 
 func (t Task) UpdatedOn() time.Time {
-	return t.updated_on
+	return t.updatedOn
 }
 
 func (t Task) CreatedOn() time.Time {
-	return t.created_on
+	return t.createdOn
+}
+
+type TaskRepository interface {
+	FindTasks() ([]Task, error)
+	GetTaskByUniqueId(uniqueId string) (Task, error)
+	CreateTask(task Task) (Task, error)
+	UpdateTask(task Task) (Task, error)
+	RemoveTask(uniqueId string) error
 }

@@ -2,44 +2,42 @@ package memory
 
 import (
 	"errors"
-	"github.com/schweppesale/todo/domain/entities"
-	"github.com/schweppesale/todo/domain/repositories"
-	"github.com/schweppesale/todo/domain/services"
+	"github.com/schweppesale/todo"
 	"sync"
 )
 
 var container = struct {
 	sync.RWMutex
-	tasks map[string]entities.Task
+	tasks map[string]todo.Task
 	keys  []string
-}{tasks: make(map[string]entities.Task)}
+}{tasks: make(map[string]todo.Task)}
 
 type TaskRepository struct {
-	uuidService services.UuidService
+	uuidService todo.UUIDGenerator
 }
 
-func NewTaskRepository(UuidService services.UuidService) repositories.TaskRepository {
+func NewTaskRepository(UuidService todo.UUIDGenerator) todo.TaskRepository {
 	return TaskRepository{UuidService}
 }
 
-func (r TaskRepository) FindAll() ([]entities.Task, error) {
-	result := make([]entities.Task, 0, len(container.keys))
+func (r TaskRepository) FindTasks() ([]todo.Task, error) {
+	result := make([]todo.Task, 0, len(container.keys))
 	for _, value := range container.keys {
 		result = append(result, container.tasks[value])
 	}
 	return result, nil
 }
 
-func (r TaskRepository) GetTaskByUniqueId(uniqueId string) (entities.Task, error) {
+func (r TaskRepository) GetTaskByUniqueId(uniqueId string) (todo.Task, error) {
 	if val, ok := container.tasks[uniqueId]; ok {
 		return val, nil
 	} else {
-		return entities.Task{}, errors.New("Task does not exist!")
+		return todo.Task{}, errors.New("Task does not exist!")
 	}
 }
 
-func (r TaskRepository) CreateTask(task entities.Task) (entities.Task, error) {
-	task.SetUniqueID(r.uuidService.Generate())
+func (r TaskRepository) CreateTask(task todo.Task) (todo.Task, error) {
+	task.SetUniqueID(r.uuidService)
 	container.Lock()
 	container.tasks[task.UniqueId()] = task
 	container.keys = append(container.keys, task.UniqueId())
@@ -47,7 +45,7 @@ func (r TaskRepository) CreateTask(task entities.Task) (entities.Task, error) {
 	return task, nil
 }
 
-func (r TaskRepository) UpdateTask(task entities.Task) (entities.Task, error) {
+func (r TaskRepository) UpdateTask(task todo.Task) (todo.Task, error) {
 	container.Lock()
 	container.tasks[task.UniqueId()] = task
 	container.Unlock()
