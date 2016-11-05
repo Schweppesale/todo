@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Task struct serves as an domain entity
+// Task is a domain entity
 type Task struct {
 	uniqueID    string
 	title       string
@@ -13,7 +13,7 @@ type Task struct {
 	updatedOn   time.Time
 }
 
-// NewTask serves as a constructor
+// NewTask serves as a Task constructor
 func NewTask(title string, description string) Task {
 	return Task{
 		"",
