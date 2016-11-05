@@ -24,7 +24,7 @@ func NewTask(title string, description string) Task {
 	}
 }
 
-// SetUniqueID encapsulates the business rules for changing a Task ID
+// SetUniqueID invokes the UUIDGenerator interface to generate a new ID
 func (t *Task) SetUniqueID(generator UUIDGenerator) {
 	t.uniqueID = generator.Generate()
 	t.updatedOn = time.Now()
@@ -40,13 +40,13 @@ func (t Task) Description() string {
 	return t.description
 }
 
-// SetTitle changes the title for this Task
+// SetTitle changes the title
 func (t *Task) SetTitle(title string) {
 	t.title = title
 	t.updatedOn = time.Now()
 }
 
-// SetDescription changes the description for this Task
+// SetDescription changes the description
 func (t *Task) SetDescription(description string) {
 	t.description = description
 }
