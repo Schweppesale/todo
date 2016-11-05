@@ -40,13 +40,13 @@ func (t Task) Description() string {
 	return t.description
 }
 
-// SetTitle changes the Task title
+// SetTitle changes the title for this Task
 func (t *Task) SetTitle(title string) {
 	t.title = title
 	t.updatedOn = time.Now()
 }
 
-// SetDescription changes the Task description
+// SetDescription changes the description for this Task
 func (t *Task) SetDescription(description string) {
 	t.description = description
 }
