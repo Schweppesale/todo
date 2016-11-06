@@ -15,8 +15,8 @@ func NewTaskService(tasks todo.TaskRepository) TaskService {
 	}
 }
 
-func (ts TaskService) FindTasks() ([]Task, error) {
-	tasks, err := ts.tasks.FindTasks()
+func (ts TaskService) FindAll() ([]Task, error) {
+	tasks, err := ts.tasks.FindAll()
 	result := make([]Task, len(tasks))
 	for k, v := range tasks {
 		result[k] = NewTask(v)
@@ -24,29 +24,29 @@ func (ts TaskService) FindTasks() ([]Task, error) {
 	return result, err
 }
 
-func (ts TaskService) GetTaskByUniqueID(uniqueID string) (Task, error) {
-	task, err := ts.tasks.GetTaskByUniqueID(uniqueID)
+func (ts TaskService) GetByUniqueID(uniqueID string) (Task, error) {
+	task, err := ts.tasks.GetByUniqueID(uniqueID)
 	return NewTask(task), err
 }
 
-func (ts TaskService) CreateTask(title string, description string) (Task, error) {
-	task, err := ts.tasks.CreateTask(todo.NewTask(title, description))
+func (ts TaskService) Create(title string, description string) (Task, error) {
+	task, err := ts.tasks.Create(todo.NewTask(title, description))
 	return NewTask(task), err
 }
 
-func (ts TaskService) UpdateTask(uniqueID string, title string, description string) (Task, error) {
-	task, err := ts.tasks.GetTaskByUniqueID(uniqueID)
+func (ts TaskService) Update(uniqueID string, title string, description string) (Task, error) {
+	task, err := ts.tasks.GetByUniqueID(uniqueID)
 	if err != nil {
 		return Task{}, err
 	}
 	task.SetTitle(title)
 	task.SetDescription(description)
-	newTask, err := ts.tasks.UpdateTask(task)
+	newTask, err := ts.tasks.Update(task)
 	return NewTask(newTask), err
 }
 
-func (ts TaskService) RemoveTask(uniqueID string) error {
-	return ts.tasks.RemoveTask(uniqueID)
+func (ts TaskService) Remove(uniqueID string) error {
+	return ts.tasks.Remove(uniqueID)
 }
 
 type Task struct {

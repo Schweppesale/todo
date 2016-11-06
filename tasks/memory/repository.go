@@ -20,7 +20,7 @@ func NewTaskRepository(UuidService UUIDGenerator) todo.TaskRepository {
 	return TaskRepository{UuidService}
 }
 
-func (r TaskRepository) FindTasks() ([]todo.Task, error) {
+func (r TaskRepository) FindAll() ([]todo.Task, error) {
 	result := make([]todo.Task, 0, len(container.keys))
 	for _, value := range container.keys {
 		result = append(result, container.tasks[value])
@@ -28,7 +28,7 @@ func (r TaskRepository) FindTasks() ([]todo.Task, error) {
 	return result, nil
 }
 
-func (r TaskRepository) GetTaskByUniqueID(uniqueID string) (todo.Task, error) {
+func (r TaskRepository) GetByUniqueID(uniqueID string) (todo.Task, error) {
 	if val, ok := container.tasks[uniqueID]; ok {
 		return val, nil
 	} else {
@@ -36,7 +36,7 @@ func (r TaskRepository) GetTaskByUniqueID(uniqueID string) (todo.Task, error) {
 	}
 }
 
-func (r TaskRepository) CreateTask(task todo.Task) (todo.Task, error) {
+func (r TaskRepository) Create(task todo.Task) (todo.Task, error) {
 	task.SetUniqueID(r.uuidService.Generate())
 	container.Lock()
 	container.tasks[task.UniqueID()] = task
@@ -45,14 +45,14 @@ func (r TaskRepository) CreateTask(task todo.Task) (todo.Task, error) {
 	return task, nil
 }
 
-func (r TaskRepository) UpdateTask(task todo.Task) (todo.Task, error) {
+func (r TaskRepository) Update(task todo.Task) (todo.Task, error) {
 	container.Lock()
 	container.tasks[task.UniqueID()] = task
 	container.Unlock()
 	return task, nil
 }
 
-func (r TaskRepository) RemoveTask(uniqueID string) error {
+func (r TaskRepository) Remove(uniqueID string) error {
 	container.Lock()
 	delete(container.tasks, uniqueID)
 	for key, value := range container.keys { //@todo optimize

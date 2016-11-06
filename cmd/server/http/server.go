@@ -25,14 +25,14 @@ func (server Server) Run() {
 	router.HandleFunc("/api/todo/tasks", func(response http.ResponseWriter, request *http.Request) {
 		switch request.Method {
 		case "GET":
-			tasks, err := server.taskService.FindTasks()
+			tasks, err := server.taskService.FindAll()
 			FormatResponse(response, tasks, err)
 			break
 		case "POST":
 			request.ParseForm()
 			title := request.Form.Get("title")
 			description := request.Form.Get("description")
-			task, err := server.taskService.CreateTask(title, description)
+			task, err := server.taskService.Create(title, description)
 			FormatResponse(response, task, err)
 			break
 		}
@@ -42,18 +42,18 @@ func (server Server) Run() {
 		uniqueID := path.Base(request.RequestURI)
 		switch request.Method {
 		case "GET":
-			task, err := server.taskService.GetTaskByUniqueID(uniqueID)
+			task, err := server.taskService.GetByUniqueID(uniqueID)
 			FormatResponse(response, task, err)
 			break
 		case "PATCH":
 			request.ParseForm()
 			title := request.Form.Get("title")
 			description := request.Form.Get("description")
-			task, err := server.taskService.UpdateTask(uniqueID, title, description)
+			task, err := server.taskService.Update(uniqueID, title, description)
 			FormatResponse(response, task, err)
 			break
 		case "DELETE":
-			err := server.taskService.RemoveTask(uniqueID)
+			err := server.taskService.Remove(uniqueID)
 			FormatResponse(response, "success true", err)
 			break
 		}

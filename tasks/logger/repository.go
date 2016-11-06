@@ -15,35 +15,35 @@ func NewTaskRepository(tasks todo.TaskRepository) todo.TaskRepository {
 	}
 }
 
-func (r TaskRepository) FindTasks() ([]todo.Task, error) {
+func (r TaskRepository) FindAll() ([]todo.Task, error) {
 	log.Print("TaskRepository.FindAll:")
-	result, err := r.tasks.FindTasks()
+	result, err := r.tasks.FindAll()
 	log.Print("TaskRepository.FindAll:", result)
 	return result, err
 }
 
-func (r TaskRepository) GetTaskByUniqueID(uniqueID string) (todo.Task, error) {
-	log.Print("TaskRepository.GetTaskByUniqueID:", uniqueID)
-	result, err := r.tasks.GetTaskByUniqueID(uniqueID)
-	log.Print("TaskRepository.GetTaskByUniqueID:", result, err)
+func (r TaskRepository) GetByUniqueID(uniqueID string) (todo.Task, error) {
+	log.Print("TaskRepository.GetByUniqueID:", uniqueID)
+	result, err := r.tasks.GetByUniqueID(uniqueID)
+	log.Print("TaskRepository.GetByUniqueID:", result, err)
 	return result, err
 }
 
-func (r TaskRepository) UpdateTask(task todo.Task) (todo.Task, error) {
-	log.Print("TaskRepository.UpdateTask:", task)
-	result, err := r.tasks.UpdateTask(task)
-	log.Print("TaskRepository.UpdateTask:", result, err)
+func (r TaskRepository) Update(task todo.Task) (todo.Task, error) {
+	log.Print("TaskRepository.Update:", task)
+	result, err := r.tasks.Update(task)
+	log.Print("TaskRepository.Update:", result, err)
 	return result, err
 }
 
-func (r TaskRepository) CreateTask(task todo.Task) (todo.Task, error) {
-	log.Print("TaskRepository.CreateTask:", task)
-	result, err := r.tasks.CreateTask(task)
-	log.Print("TaskRepository.CreateTask:", result, err)
+func (r TaskRepository) Create(task todo.Task) (todo.Task, error) {
+	log.Print("TaskRepository.Create:", task)
+	result, err := r.tasks.Create(task)
+	log.Print("TaskRepository.Create:", result, err)
 	return result, err
 }
 
-func (r TaskRepository) RemoveTask(uniqueID string) error {
-	log.Print("TaskRepository.RemoveTask:", uniqueID)
-	return r.tasks.RemoveTask(uniqueID)
+func (r TaskRepository) Remove(uniqueID string) error {
+	log.Print("TaskRepository.Remove:", uniqueID)
+	return r.tasks.Remove(uniqueID)
 }

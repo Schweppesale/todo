@@ -10,15 +10,15 @@ func NewTestTaskRepository() todo.TaskRepository {
 	return NewTaskRepository(satori.NewUUIDGenerator())
 }
 
-func TestTaskRepository_CreateTask(t *testing.T) {
+func TestNewTaskRepository(t *testing.T) {
 	tasks := NewTestTaskRepository()
 	newTask := todo.NewTask("title", "description")
-	storedTask, err := tasks.CreateTask(newTask)
+	storedTask, err := tasks.Create(newTask)
 	if err != nil {
 		t.Error(err)
 	}
 
-	fetchedTask, err := tasks.GetTaskByUniqueID(storedTask.UniqueID())
+	fetchedTask, err := tasks.GetByUniqueID(storedTask.UniqueID())
 	if err != nil {
 		t.Error(err)
 	}

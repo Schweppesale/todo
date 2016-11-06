@@ -69,9 +69,9 @@ func (t Task) CreatedOn() time.Time {
 
 // TaskRepository serves as a layer of abstraction around our persistence layer
 type TaskRepository interface {
-	FindTasks() ([]Task, error)
-	GetTaskByUniqueID(uniqueID string) (Task, error)
-	CreateTask(task Task) (Task, error)
-	UpdateTask(task Task) (Task, error)
-	RemoveTask(uniqueID string) error
+	FindAll() ([]Task, error)
+	GetByUniqueID(uniqueID string) (Task, error)
+	Create(task Task) (Task, error)
+	Update(task Task) (Task, error)
+	Remove(uniqueID string) error
 }
