@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/schweppesale/todo/cmd/server/api"
-	"github.com/schweppesale/todo/cmd/server/http"
+	"github.com/schweppesale/todo/cmd/todo-server/api"
+	"github.com/schweppesale/todo/cmd/todo-server/http"
 	"github.com/schweppesale/todo/tasks/logger"
 	"github.com/schweppesale/todo/tasks/memory"
 	"github.com/schweppesale/todo/tasks/memory/satori"

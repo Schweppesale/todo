@@ -3,7 +3,7 @@ package http
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/schweppesale/todo/cmd/server/api"
+	"github.com/schweppesale/todo/cmd/todo-server/api"
 	"log"
 	"net/http"
 	"path"
