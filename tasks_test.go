@@ -9,7 +9,6 @@ func NewTestTask() Task {
 }
 
 func TestNewTask(t *testing.T) {
-
 	task := NewTestTask()
 	title := "new title"
 	task.SetTitle(title)

@@ -13,19 +13,15 @@ func NewTestTaskService() TaskService {
 }
 
 func TestNewTaskService(t *testing.T) {
-
-	service := NewTestTaskService()
-
 	title := "title"
 	description := "description"
-
+	service := NewTestTaskService()
 	task, err := service.Create(title, description)
 	if err != nil {
 		t.Error(err)
 	}
 
-
-	if (task.Title != title || task.Description != description) {
+	if task.Title != title || task.Description != description {
 		t.Error("Task not set!")
 	}
 
@@ -37,27 +33,26 @@ func TestNewTaskService(t *testing.T) {
 		t.Error(err)
 	}
 
-	if (updatedTask.Title != updatedTitle || updatedTask.Description != updatedDescription) {
+	if updatedTask.Title != updatedTitle || updatedTask.Description != updatedDescription {
 		t.Error("Task not updated!")
 	}
 
 	fetchedTask, err := service.GetByUniqueID(task.UniqueID)
-	if(err != nil) {
+	if err != nil {
 		t.Error(err)
 	}
 
-	if(fetchedTask.Title != updatedTitle) {
+	if fetchedTask.Title != updatedTitle {
 		t.Error("Invalid task!")
 	}
 
 	err = service.Remove(uniqueID)
-	if(err != nil) {
+	if err != nil {
 		t.Error(err)
 	}
 
 	deletedTask, err := service.GetByUniqueID(uniqueID)
-	if(err == nil) {
+	if err == nil {
 		t.Error("Task should have been removed: ", deletedTask)
 	}
-
 }

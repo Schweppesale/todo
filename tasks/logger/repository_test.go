@@ -2,9 +2,9 @@ package logger
 
 import (
 	"github.com/schweppesale/todo"
+	"github.com/schweppesale/todo/tasks/memory"
 	"github.com/schweppesale/todo/tasks/memory/satori"
 	"testing"
-	"github.com/schweppesale/todo/tasks/memory"
 )
 
 func NewTestTaskRepository() todo.TaskRepository {
