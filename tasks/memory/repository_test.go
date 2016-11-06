@@ -2,7 +2,7 @@ package memory
 
 import (
 	"github.com/schweppesale/todo"
-	"github.com/schweppesale/todo/infrastructure/satori"
+	"github.com/schweppesale/todo/tasks/memory/satori"
 	"testing"
 )
 

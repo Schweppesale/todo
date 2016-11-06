@@ -1,0 +1,10 @@
+hash: 03a4ce221141fddfe83ea661bb1ffedbe7847498defd3138578d8e4143ffb423
+updated: 2016-11-06T12:24:15.176494593-05:00
+imports:
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: 0eeaf8392f5b04950925b8a69fe70f110fa7cbfc
+- name: github.com/satori/go.uuid
+  version: 879c5887cd475cd7864858769793b2ceb0d44feb
+testImports: []
