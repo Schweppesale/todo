@@ -24,9 +24,9 @@ func NewTask(title string, description string) Task {
 	}
 }
 
-// SetUniqueID invokes an interface which generates a new UUID
-func (t *Task) SetUniqueID(generator UUIDGenerator) {
-	t.uniqueID = generator.Generate()
+// SetUniqueID assigns this task a unique ID
+func (t *Task) SetUniqueID(uniqueID string) {
+	t.uniqueID = uniqueID
 	t.updatedOn = time.Now()
 }
 
@@ -49,6 +49,7 @@ func (t *Task) SetTitle(title string) {
 // SetDescription changes the description
 func (t *Task) SetDescription(description string) {
 	t.description = description
+	t.updatedOn = time.Now()
 }
 
 // UniqueID returns the Task ID

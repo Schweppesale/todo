@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/schweppesale/todo/cmd/server/api"
 	"github.com/schweppesale/todo/cmd/server/http"
-	"github.com/schweppesale/todo/infrastructure/logger"
-	"github.com/schweppesale/todo/infrastructure/memory"
-	"github.com/schweppesale/todo/infrastructure/satori"
+	"github.com/schweppesale/todo/tasks/logger"
+	"github.com/schweppesale/todo/tasks/memory"
+	"github.com/schweppesale/todo/tasks/memory/satori"
 )
 
 func main() {

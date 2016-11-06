@@ -13,10 +13,10 @@ var container = struct {
 }{tasks: make(map[string]todo.Task)}
 
 type TaskRepository struct {
-	uuidService todo.UUIDGenerator
+	uuidService UUIDGenerator
 }
 
-func NewTaskRepository(UuidService todo.UUIDGenerator) todo.TaskRepository {
+func NewTaskRepository(UuidService UUIDGenerator) todo.TaskRepository {
 	return TaskRepository{UuidService}
 }
 
@@ -37,7 +37,7 @@ func (r TaskRepository) GetTaskByUniqueID(uniqueID string) (todo.Task, error) {
 }
 
 func (r TaskRepository) CreateTask(task todo.Task) (todo.Task, error) {
-	task.SetUniqueID(r.uuidService)
+	task.SetUniqueID(r.uuidService.Generate())
 	container.Lock()
 	container.tasks[task.UniqueID()] = task
 	container.keys = append(container.keys, task.UniqueID())
@@ -62,4 +62,8 @@ func (r TaskRepository) RemoveTask(uniqueID string) error {
 	}
 	container.Unlock()
 	return nil
+}
+
+type UUIDGenerator interface {
+	Generate() string
 }
