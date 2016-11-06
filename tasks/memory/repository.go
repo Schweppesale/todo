@@ -21,10 +21,12 @@ func NewTaskRepository(UuidService UUIDGenerator) todo.TaskRepository {
 }
 
 func (r TaskRepository) FindAll() ([]todo.Task, error) {
+	container.Lock()
 	result := make([]todo.Task, 0, len(container.keys))
 	for _, value := range container.keys {
 		result = append(result, container.tasks[value])
 	}
+	container.Unlock()
 	return result, nil
 }
 
